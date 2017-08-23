@@ -27,13 +27,20 @@ describe('helpers', function() {
   it('should trim for bash', function() {
     const assertion = trimForBash(`
       
-      echo 123
+      alias a1="echo a1"
       
       
-      echo 321
+      alias a2="echo a2"
       
+      alias a3="echo a3"
+      alias a4="echo a4"
     `);
-    const expected = ['echo 123', 'echo 321'].join('\n');
+    const expected = [
+      'alias a1="echo a1"',
+      'alias a2="echo a2"',
+      'alias a3="echo a3"',
+      'alias a4="echo a4"'
+    ].join('\n');
 
     should(assertion).eql(expected);
   });
