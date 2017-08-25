@@ -1,6 +1,11 @@
 const _ = require('lodash');
 
-const { map, isArray, capitalize } = _;
+const {
+  map,
+  clone,
+  isArray,
+  capitalize
+} = _;
 
 module.exports = { getName };
 
@@ -12,6 +17,8 @@ module.exports = { getName };
  */
 function getName(words) {
   if (!isArray(words)) return words;
+
+  words = clone(words);
 
   return words[0] + map(words.splice(1), capitalize).join('');
 }
