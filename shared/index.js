@@ -2,9 +2,9 @@ const _ = require('lodash');
 
 const {
   map,
-  clone,
   isArray,
-  capitalize
+  upperFirst,
+  lowerFirst
 } = _;
 
 module.exports = { getName };
@@ -18,8 +18,8 @@ module.exports = { getName };
 function getName(words) {
   if (!isArray(words)) return words;
 
-  words = clone(words);
+  const upperFirstWords = map(words, upperFirst);
 
-  return words[0] + map(words.splice(1), capitalize).join('');
+  return lowerFirst(upperFirstWords.join(''));
 }
 
