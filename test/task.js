@@ -16,8 +16,8 @@ describe('task', function() {
       it('should build task', function() {
         should({
           name: 'task',
-          fn: t => t.command('echo 123')
-        }).task({ name: 'task', commands: ['echo 123'] });
+          fn: t => t.command('echo "123"')
+        }).task({ name: 'task', commands: ['echo \"123\"'] });
       });
 
       it('should build task with array of commands', function() {
@@ -49,12 +49,12 @@ describe('task', function() {
         }).task([
           { name: 'task', commands: [
             'echo 123',
-            'echo \'some info\'',
-            'echo \'some more info\''
+            'echo \"some info\"',
+            'echo \"some more info\"'
           ] },
           { name: 'taskInfo', commands: [
-            'echo \'some info\'',
-            'echo \'some more info\''
+            'echo \"some info\"',
+            'echo \"some more info\"'
           ] },
         ]);
       });
