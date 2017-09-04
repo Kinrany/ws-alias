@@ -23,7 +23,7 @@ describe('alias', function() {
   });
 
   describe('DSL', function() {
-    it('should build aliases set', function() {
+    it('should build aliases', function() {
       should(rc => {
         rc.alias('alias1', 'echo alias1');
         rc.alias('alias2', 'echo alias2');
@@ -80,9 +80,57 @@ describe('alias', function() {
       )).build('alias firstSecondThird="alias"');
     });
 
-    it('should build with object in params', function() {
-      should({ rcFile: rc => rc.alias('test', 'alias') })
-        .build('alias test="alias"');
+    it('should build with params as object', function() {
+      const params = { rcFile: rc => rc.alias('test', 'alias') };
+
+      should(params).build('alias test="alias"');
+    });
+
+    describe('use alias', function() {
+      it('should use another alias', function() {
+        should(rc => {
+          const ssh = rc.alias('dev', 'ssh user@domain.com');
+
+          rc.useAlias(ssh, 'log', 'tail -f /var/log/file.log');
+        }).build([
+          'alias dev="ssh user@domain.com"',
+          'alias devLog="dev tail -f /var/log/file.log"'
+        ]);
+      });
+
+      it('should not attach group name and work nested', function() {
+        should(rc => {
+          const first = rc.alias('first', 'echo');
+
+          rc.group('group1', g => {
+            const second = g.useAlias(first, 'second', 'my text');
+
+            g.group('group2', g => g.useAlias(second, 'third', '| grep my'));
+          });
+        }).build([
+          'alias first="echo"',
+          'alias firstSecond="first my text"',
+          'alias firstSecondThird="firstSecond | grep my"',
+        ]);
+      });
+    });
+
+    describe('conveyor', function() {
+      it('should build conveyor', function() {
+        should(rc => rc.conveyor('conveyor', 'echo 123', 'echo 321'))
+          .build('alias conveyor="echo 123 && echo 321"');
+      });
+
+      it('should build conveyor with alias', function() {
+        should(rc => {
+          const alias = rc.alias('myAlias', 'echo 123');
+
+          rc.conveyor('conveyor', 'echo 321', alias);
+        }).build([
+          'alias myAlias="echo 123"',
+          'alias conveyor="echo 321 && myAlias"'
+        ]);
+      });
     });
   });
 });
