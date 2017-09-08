@@ -4,7 +4,8 @@ const {
   map,
   isArray,
   upperFirst,
-  lowerFirst
+  lowerFirst,
+  flattenDeep,
 } = _;
 
 module.exports = { getName };
@@ -17,6 +18,8 @@ module.exports = { getName };
  */
 function getName(words) {
   if (!isArray(words)) return words;
+
+  words = flattenDeep(words);
 
   const upperFirstWords = map(words, upperFirst);
 
