@@ -3,8 +3,8 @@ const should = require('should');
 const helpers = require('../helpers');
 const TaskDSL = require('../lib/dsl/task');
 
-const { reduce, isObject } = _;
-const { asArray, escapeQuotes } = helpers;
+const { reduce, isObject, castArray } = _;
+const { escapeQuotes } = helpers;
 
 describe('task', function() {
   beforeEach(function() {
@@ -71,7 +71,7 @@ function assertions(should, Assertion) {
 
     const assertion = dsl.toString();
 
-    expected = reduce(asArray(expected), (result, item) => {
+    expected = reduce(castArray(expected), (result, item) => {
       if (isObject(item)) {
         const { name, commands } = item;
         const conveyor = escapeQuotes(commands.join(' && '));
