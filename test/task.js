@@ -1,10 +1,11 @@
 const _ = require('lodash');
 const should = require('should');
 const helpers = require('../helpers');
-const TaskDSL = require('../lib/dsl/task');
+const rcFile = require('../lib/rc-file');
 
 const { reduce, isObject, castArray } = _;
 const { escapeQuotes } = helpers;
+const { build } = rcFile;
 
 describe('task', function() {
   beforeEach(function() {
@@ -47,15 +48,11 @@ describe('task', function() {
             `);
           },
         }).task([
-          { name: 'task', commands: [
-            'echo 123',
-            'echo \"some info\"',
-            'echo \"some more info\"'
-          ] },
           { name: 'taskInfo', commands: [
             'echo \"some info\"',
             'echo \"some more info\"'
           ] },
+          { name: 'task', commands: ['echo 123 && taskInfo'] },
         ]);
       });
     });
@@ -65,11 +62,9 @@ describe('task', function() {
 function assertions(should, Assertion) {
   Assertion.add('task', function(expected) {
     const { name, fn } = this.obj;
-    const dsl = new TaskDSL(name);
+    const rcSchema = rc => rc.task(name, fn);
 
-    fn(dsl);
-
-    const assertion = dsl.toString();
+    const assertion = build(rcSchema);
 
     expected = reduce(castArray(expected), (result, item) => {
       if (isObject(item)) {
