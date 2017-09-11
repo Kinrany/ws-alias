@@ -13,7 +13,7 @@ module.exports = { getName };
 /**
  * Returns alias name. Convert to string if array given.
  *
- * @param {Array|String} words
+ * @param {String[]|String} words
  * @return {String}
  */
 function getName(words) {
