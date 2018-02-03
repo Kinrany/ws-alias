@@ -84,7 +84,7 @@ describe('alias', function() {
       });
 
       it('should build with params as object', function() {
-        const params = { rcFile: rc => rc.alias('test', 'alias') };
+        const params = { schema: rc => rc.alias('test', 'alias') };
 
         should(params).build('alias test="alias"');
       });
