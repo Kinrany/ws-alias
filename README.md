@@ -4,7 +4,7 @@
 npm run ws-alias -s ./path/to/schema.js -o ./path/to/aliases.sh
 ```
 
-Schema:
+This schema:
 ```js
 module.exports = function(s) {
   s.alias('echo1', 'echo 1');
@@ -20,7 +20,7 @@ module.exports = function(s) {
 };
 ```
 
-will be build aliases:
+Will build aliases:
 ```bash
 alias echo1="echo 1"
 alias echo2="echo 2"
